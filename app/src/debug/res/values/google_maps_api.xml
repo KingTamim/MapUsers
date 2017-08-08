@@ -1,0 +1,26 @@
+<resources>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=6F:F3:4B:CD:B4:B2:35:24:F7:27:3C:38:18:4C:10:2B:65:49:25:02%3Bcom.mangolab.mapusers
+
+    You can also add your credentials to an existing key, using these values:
+
+    Package name:
+    6F:F3:4B:CD:B4:B2:35:24:F7:27:3C:38:18:4C:10:2B:65:49:25:02
+
+    SHA-1 certificate fingerprint:
+    6F:F3:4B:CD:B4:B2:35:24:F7:27:3C:38:18:4C:10:2B:65:49:25:02
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+        AIzaSyDjsg4b3HintsWNOAgL7vzDe5bfsls8gF8
+    </string>
+</resources>

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "923936507093",
+    "firebase_url": "https://mapusers-cc1f5.firebaseio.com",
+    "project_id": "mapusers-cc1f5",
+    "storage_bucket": "mapusers-cc1f5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:923936507093:android:31b20ceae7769e56",
+        "android_client_info": {
+          "package_name": "com.mangolab.mapusers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "923936507093-ta6bqb1heh2vn8uu8jfhf05ahn4apt67.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mangolab.mapusers",
+            "certificate_hash": "6ff34bcdb4b23524f7273c38184c102b65492502"
+          }
+        },
+        {
+          "client_id": "923936507093-i87ov70aihbob3ch13tprk07tj29iu2j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0gNseRDhuQiAQNg-xjDc7XVJ2tEPivkU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "923936507093-i87ov70aihbob3ch13tprk07tj29iu2j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
