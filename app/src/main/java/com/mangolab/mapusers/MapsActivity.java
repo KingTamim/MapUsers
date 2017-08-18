@@ -46,7 +46,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.maps.android.SphericalUtil;
 
 import org.w3c.dom.Text;
 
@@ -127,6 +129,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.getUid());
         databaseReference2 = FirebaseDatabase.getInstance().getReference().child("User_Location").child(firebaseUser.getUid());
         geoFireRef = FirebaseDatabase.getInstance().getReference("User_Location");
+        //geoFireRef = FirebaseDatabase.getInstance().getReference();
         databaseReference3 = FirebaseDatabase.getInstance().getReference().child("Users");
         geoFireObject = new GeoFire(geoFireRef);
 
@@ -288,47 +291,56 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void getNearbyMarkers(){
 
-        geoFireRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                for (DataSnapshot locationSnapshot : dataSnapshot.getChildren()){
+                geoFireRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    LocationData locations = locationSnapshot.getValue(LocationData.class);
+                        for (DataSnapshot locationSnapshot : dataSnapshot.getChildren()){
 
-                    final Double tempLat = Double.parseDouble(locations.getLatitude());
-                    final Double tempLng = Double.parseDouble(locations.getLongitude());
-                    final String uid = locations.getUid();
-                    databaseReference3.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            String name = dataSnapshot.child(uid).child("name").getValue().toString();
-                            String business = dataSnapshot.child(uid).child("business").getValue().toString();
+                            LocationData locations = locationSnapshot.getValue(LocationData.class);
 
-                            LatLng allLatLang = new LatLng(tempLat,tempLng);
-                            MarkerOptions markerOptions = new MarkerOptions();
-                            markerOptions.position(allLatLang);
-                            markerOptions.title(name);
-                            markerOptions.snippet(business);
-                            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                            final Double tempLat = Double.parseDouble(locations.getLatitude());
+                            final Double tempLng = Double.parseDouble(locations.getLongitude());
+                            final String uid = locations.getUid();
+                            databaseReference3.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    String name = dataSnapshot.child(uid).child("name").getValue().toString();
+                                    String business = dataSnapshot.child(uid).child("business").getValue().toString();
 
-                            locationMarker = mMap.addMarker(markerOptions);
+                                    LatLng allLatLang = new LatLng(tempLat,tempLng);
+                                    MarkerOptions markerOptions = new MarkerOptions();
+                                    markerOptions.position(allLatLang);
+                                    markerOptions.title(name);
+                                    markerOptions.snippet(business);
+                                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+
+
+                                    locationMarker = mMap.addMarker(markerOptions.visible(false));
+                                    //locationMarker = mMap.addMarker(markerOptions);
+
+                                    LatLng yourLatLang = new LatLng(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude());
+                                    if (SphericalUtil.computeDistanceBetween(yourLatLang, locationMarker.getPosition()) < 1000) {
+                                        locationMarker.setVisible(true);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
                         }
+                    }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                        }
-                    });
+                    }
+                });
 
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
     }
 
@@ -366,9 +378,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Log.d(TAG, "Location update resumed .....................");
         }
     }
-
-
-
 
 
 }

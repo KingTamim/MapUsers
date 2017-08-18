@@ -46,6 +46,7 @@ dependencies {
     compile 'com.firebaseui:firebase-ui-database:0.4.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
+    compile 'com.google.maps.android:android-maps-utils:0.5+'
     compile 'com.firebase:geofire-android:2.1.1'
     testCompile 'junit:junit:4.12'
 }
