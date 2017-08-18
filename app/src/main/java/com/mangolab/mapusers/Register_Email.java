@@ -49,9 +49,8 @@ public class Register_Email extends AppCompatActivity {
                 String email = editTextEmail.getText().toString().trim();
                 String password = editTextPassword.getText().toString().trim();
 
-                if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) ){
-                    Snackbar.make(view,"Both fields are required for registration",Snackbar.LENGTH_LONG).show();
-                }
+                if (!TextUtils.isEmpty(email) || !TextUtils.isEmpty(password) ){
+
 
                 progressDialog.setMessage("Registering Email ID");
                 progressDialog.show();
@@ -73,7 +72,8 @@ public class Register_Email extends AppCompatActivity {
                             }
                         });
 
-
+                }else
+                    Snackbar.make(view,"Both fields are required for registration",Snackbar.LENGTH_LONG).show();
             }
         });
 

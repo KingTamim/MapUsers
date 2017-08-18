@@ -29,6 +29,14 @@
             android:layout_height="wrap_content"
             android:id="@+id/button_StartMap"
             android:text="VIEW MAP"/>
+        <Button
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonLogOut"
+            android:text="Sign out"
+            android:textColor="#888"
+            android:background="#0000"/>
 
 
 

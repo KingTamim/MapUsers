@@ -39,7 +39,7 @@ public class Login_Activity extends AppCompatActivity {
         tAuth = FirebaseAuth.getInstance();
 
         if (tAuth.getCurrentUser() != null){
-            startActivity(new Intent(this,Profile_Activity.class));
+            startActivity(new Intent(this,MapsActivity.class));
             finish();
         }
 
@@ -59,24 +59,24 @@ public class Login_Activity extends AppCompatActivity {
                 String email = editTextEmail.getText().toString().trim();
                 String password = editTextPassword.getText().toString().trim();
 
-                if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) ){
-                    Snackbar.make(view,"Both fields are required",Snackbar.LENGTH_LONG).show();
-                }
+                if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) ){
 
-                tAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                    tAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        if(task.isSuccessful()){
-                            startActivity(new Intent(Login_Activity.this,Profile_Activity.class));
-                            finish();
-                        }else{
-                            Toast.makeText(Login_Activity.this, "Check email or password you entered.", Toast.LENGTH_SHORT).show();
+                            if(task.isSuccessful()){
+                                startActivity(new Intent(Login_Activity.this,MapsActivity.class));
+                                finish();
+                            }else{
+                                Toast.makeText(Login_Activity.this, "Check email or password you entered.", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+                }else{
+                    Snackbar.make(view,"Both Fields are Required",Snackbar.LENGTH_LONG).show();
 
-                Toast.makeText(Login_Activity.this, "Good !", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
