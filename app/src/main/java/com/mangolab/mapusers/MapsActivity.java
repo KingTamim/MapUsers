@@ -58,11 +58,11 @@ import java.util.Date;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener, GoogleMap.OnMarkerClickListener {
 
     private static final String TAG = "MapsActivity";
-    private static final long INTERVAL = 1000 * 5;
-    private static final long FASTEST_INTERVAL = 1000 * 2;
+    private static final long INTERVAL = 1000 * 9;
+    private static final long FASTEST_INTERVAL = 1000 * 3;
 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
@@ -81,8 +81,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private DatabaseReference databaseReference3;
     private GeoFire geoFireObject;
 
+    private String name;
+    private String info;
+
     private Button fusedLocation;
     TextView locationUpdate;
+
+    public static final String UID = "marker_uid";
+    public static final String USER_NAME ="marker_name";
+    public static final String USER_INFO="marker_info";
+
 
     protected void createLocationRequest(){
 
@@ -155,41 +163,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
 
-        /*databaseReference2.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-
-                for (DataSnapshot usersLocationShanpshot : dataSnapshot.getChildren()){
-
-                    UserData locations = usersLocationShanpshot.getValue(UserData.class);
-
-                    Double tempLat = Double.parseDouble(locations.getLatitude());
-                    Double tempLng = Double.parseDouble(locations.getLongitude());
-                    String name = locations.getName();
-                    String business = locations.getBusiness();
-
-                    LatLng allLatLang = new LatLng(tempLat,tempLng);
-
-                    MarkerOptions markerOptions = new MarkerOptions();
-                    markerOptions.position(allLatLang);
-                    markerOptions.title(name);
-                    markerOptions.snippet(business);
-                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
-                    //markerOptions.icon(BitmapDescriptorFactory.);
-                    //mMap.clear();
-                    locationMarker = mMap.addMarker(markerOptions);
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });*/
-
-
     }
 
     @Override
@@ -220,6 +193,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.setMyLocationEnabled(true);
 
         }
+
+        mMap.setOnMarkerClickListener(this);
 
     }
 
@@ -303,27 +278,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             final Double tempLat = Double.parseDouble(locations.getLatitude());
                             final Double tempLng = Double.parseDouble(locations.getLongitude());
                             final String uid = locations.getUid();
+
                             databaseReference3.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     String name = dataSnapshot.child(uid).child("name").getValue().toString();
-                                    String business = dataSnapshot.child(uid).child("business").getValue().toString();
+                                    String info = uid;
 
                                     LatLng allLatLang = new LatLng(tempLat,tempLng);
                                     MarkerOptions markerOptions = new MarkerOptions();
                                     markerOptions.position(allLatLang);
                                     markerOptions.title(name);
-                                    markerOptions.snippet(business);
+                                    markerOptions.snippet(info);
                                     markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
 
 
                                     locationMarker = mMap.addMarker(markerOptions.visible(false));
-                                    //locationMarker = mMap.addMarker(markerOptions);
 
                                     LatLng yourLatLang = new LatLng(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude());
-                                    if (SphericalUtil.computeDistanceBetween(yourLatLang, locationMarker.getPosition()) < 1000) {
+                                    if (SphericalUtil.computeDistanceBetween(yourLatLang, locationMarker.getPosition()) < 200) {
                                         locationMarker.setVisible(true);
                                     }
+
                                 }
 
                                 @Override
@@ -343,7 +319,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     }
-
 
 
     @Override
@@ -380,4 +355,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        locationMarker = marker;
+        Intent intent = new Intent(getApplicationContext(),MarkerInfoView.class);
+        String uid = marker.getSnippet();
+        marker.setSnippet("");
+        intent.putExtra(UID,uid);
+        startActivity(intent);
+        return false;
+    }
 }

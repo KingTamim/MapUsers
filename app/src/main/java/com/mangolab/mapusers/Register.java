@@ -103,7 +103,7 @@ public class Register extends AppCompatActivity {
                             Uri downloadUrl = taskSnapshot.getDownloadUrl();
                             databaseReference.child("profile_picture").setValue(downloadUrl.toString());
                             databaseReference.setValue(storeUserData);
-                            startActivity(new Intent(Register.this,Profile_Activity.class));
+                            startActivity(new Intent(Register.this,MapsActivity.class));
                             Toast.makeText(Register.this, "Information saved successfully", Toast.LENGTH_SHORT).show();
                             finish();
 
